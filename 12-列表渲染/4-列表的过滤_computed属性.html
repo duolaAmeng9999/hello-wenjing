@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../js/vue.js"></script>
+    <title>列表的过滤_计算属性</title>
+</head>
+
+<body>
+    <div id="root">
+        <h2>列表的过滤</h2>
+        <input type="text" placeholder="请输入名字" v-model="keyWord">
+        <ul>
+            <li v-for="(p, index) of filPerons" :key="index">
+                {{p.name}}--{{p.age}}--{{p.sex}}--{{p.id}}
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false;
+
+    new Vue({
+        el: "#root",
+        data: {
+            keyWord: "",
+            perons: [
+                { id: "001", name: '马冬梅', age: "32", sex: "女" },
+                { id: "002", name: '周冬雨', age: "32", sex: "女" },
+                { id: "003", name: "周杰伦", age: "38", sex: "男" },
+                { id: "004", name: "温兆伦", age: "43", sex: "男" },
+                { id: "520326", name: "文静", age: "21", sex: "女" }
+            ],
+        },
+        computed: {
+            filPerons() {
+                return this.perons.filter((p) => {
+                    return p.name.indexOf(this.keyWord) !== -1
+                })
+            }
+        }
+    })
+</script>
+
+</html>

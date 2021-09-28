@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>引出生命周期</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+         <h2>当前的 n 值为 {{n}}</h2>
+         <h2 v-text="n"></h2>
+        <button @click="add">点我 n+1</button>
+        <button @click="bye">点我销毁vm</button>
+    </div>
+</body>
+<script>
+
+    /* 
+        vm 的生命周期: 
+                    将要创建 ===> 调用 beforeCreate 函数
+                    创建完毕 ===> 调用 created 函数
+                    将要挂载 ===> 调用 berforeMount 函数
+            (重要)  挂载完毕 ===> 调用 mounted 函数 =============> 【重要的钩子】
+                    将要更新 ===> 调用 beforeUpdate 函数
+                    更新完毕 ===> 调用 updated 函数
+            (重要)  将要销毁 ===> 调用 beforeDestroy 函数 =======> 【重要的钩子】
+                    销毁完毕 ===> 调用 destroyed 函数
+        
+    */
+
+    Vue.config.productionTip = false;
+
+    new Vue({
+        el: "#root",
+        /* template: `
+            <div>
+                <h2>当前的 n 值为 {{n}}</h2> 
+               <button @click="add">点我 n+1</button>
+            </div>
+        `, */
+        data: {
+            n: 2,
+        },
+        watch: {
+            n() {
+                console.log("n变了");
+            }
+        },
+        methods: {
+            add() {
+                console.log("add");
+                this.n += 1;
+            },
+            bye() {
+                console.log("bye");
+                this.$destroy()
+            }
+        },
+        // 创建之前的
+        beforeCreate() {
+            console.log("beforeCreate");
+            // console.log(this);
+        },
+        // 创建完毕
+        created() {
+            console.log("created");
+            // console.log(this);
+        },
+        // 
+        beforeMount() {
+            console.log("beforeMount");
+        },
+        mounted() {
+            console.log("mounted");
+            // console.log(this);
+        },
+        // 更新之前
+        beforeUpdate() {
+            console.log("beforeUpdate");
+            console.log(this.n);
+        },
+        updated() {
+            console.log("updated");
+            console.log(this.n); 
+            this.n = 99;
+        },
+        beforeDestroy() {
+            console.log("beforeDestroy");
+            console.log(this.n);
+            this.add();
+        },
+        destroyed() {
+            console.log("destroyed");
+        },
+
+    });
+</script>
+
+</html>

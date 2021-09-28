@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回顾 Object.definePropety</title>
+</head>
+
+<body>
+    <script>
+        let num = 2020;
+        let person = {
+            name: "文静",
+            age: 21,
+            address: "青岛"
+        }
+        Object.defineProperty(person, "year", {// 不可枚举(遍历; for in 也不行)
+            /*   value: "青岛",
+              enumerable: true,// 控制属性值是否可以枚举, 默认值是 false
+              writable: true,//控制属性值是否可以被修改, 默认值是 false
+              configurable: true,// 控制属性是否可以被删除, 默认值是 false */
+            // 当有人读取 person 的 year 属性时, get 函数(getter)就会被调用, 且返回值就是 year
+            get() {
+                console.log("有人读取 year 属性，属性值为：" + num);
+                return num;
+            },
+            // 当有人修改 person 的属性时, get 函数(setter)就会被调用, 且会收到修改的具体值
+            set(value) {
+                console.log("有人修改 year 属性，且值为：" + value);
+                num = value;
+            }
+        });
+
+        console.log(Object.keys(person));// 将对象里的属性名全部提取出来, 变成数组
+
+        console.log(person);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../js/vue.js"></script>
+    <title>条件渲染</title>
+</head>
+
+<body>
+    <div id="root">
+        <!-- 使用 v-show 来做条件渲染 -->
+        <h3 v-show="false">欢迎来到{{name}}</h3>
+        <h3 v-show="1 ===1">欢迎来到{{name}}</h3>
+
+        <!-- 使用 v-if 来做条件渲染 -->
+        <h3 v-if="false">欢迎来到{{name}}</h3>
+
+        <h2>当前 a 的值为{{a}}</h2>
+        <button @click="a++">点击a加1</button>
+
+        <!-- v-if 和 v-else-if(这是一组, 不能打断) --> 
+        <div v-if="a === 1">Angular</div>
+        <div v-else-if="a === 2">React</div>
+        <div v-else-if="a === 3">Vue</div>
+        <div v-else>十里洋场烟花地</div>
+
+        <!-- v-if 与 template 的配合使用 -->
+        <template v-if="a === 4">
+            <h2>上海</h2>
+            <h2>北京</h2>
+            <h2>南京</h2>
+        </template>
+
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false;
+
+    /* 
+        条件渲染:
+            1. v-if
+                写法:
+                    (1). v-if="表达式"
+                    (2). v-else-if="表达式"
+                    (3). v-else="表达式"
+                适用于: 切换频率较低的场景
+                特点: 不展示的 DOM 元素直接被移除
+                注意: v-if 可以和 :v-else-if, v-else 一起使用, 但要求结构中不能被打断
+            
+            2. v-show
+                写法: v-show="表达式"
+                适用于: 切换频率较高的场景
+                特点: 不展示的 DOM 元素未被移除, 仅仅是使用样式隐藏掉
+            
+            3. 备注: 使用 v-if 的时, 元素可能无法获取到, 而使用 v-show 一定可以获取到
+    */
+    new Vue({
+        el: "#root",
+        data: {
+            name: "上海",
+            a: 0
+        },
+        watch: {
+            a(newValue, oldValue) {
+                console.log(newValue, oldValue);
+                if(newValue >= 3) {
+                    this.a = 0;
+                }
+            }
+        }
+    });
+    /* for (let i = 0; i < array.length; i++) {
+        const element = array[i];
+
+    } */
+</script>
+
+</html>

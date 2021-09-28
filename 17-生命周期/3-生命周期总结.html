@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>引出生命周期</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h2 :style="{opacity}">余生多多指教！文静</h2>
+        <button @click="stop">点我停止变换</button>
+        <button @click="opacity = 1">透明度设置为 1</button>
+    </div>
+</body>
+<script>
+
+    /* 
+        常用的生命周期钩子:
+            1. mounted: 发送 Ajax 请求, 启动定时器, 绑定自定义事件, 订阅消息等, 【初始化操作】
+            2. beforeDestroy: 清楚定时器, 解绑自定义事件, 取消订阅消息等, 【收尾工作】
+        
+        关于销毁 Vue 实例
+            1. 销毁后借助 Vue 开发者工具看不到任何信息
+            2. 销毁后自定义事件会消失, 但原生 DOM 事件依然有效
+            3. 一般不会在 beforeDestroy 操作数据, 因为即便操作数据, 也不会触发更新流程了
+    */
+
+    Vue.config.productionTip = false;
+
+    new Vue({
+        el: "#root",
+        data: {
+            opacity: 1,
+        },
+        methods: {
+            stop() {
+                // clearInterval(this.timer);
+                this.$destroy();
+            },
+
+        },
+        mounted() {
+            this.timer = setInterval(() => {
+                if (this.opacity <= 0) {
+                    this.opacity = 1;
+                }
+                this.opacity -= 0.01;
+            }, 16)
+            this.isShow = true;
+        },
+        beforeDestroy() {
+            console.log("vm 即将销毁");
+            clearInterval(this.timer)
+        },
+    });
+</script>
+
+</html>

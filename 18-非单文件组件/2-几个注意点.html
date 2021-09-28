@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>几个注意点</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>{{msg}}</h1>
+        <girlfriend></girlfriend>
+        <hr>
+        <my-girlfriend></my-girlfriend>
+        <hr>
+        <!-- <girlfriend /> -->
+        <spouse></spouse>
+    </div>
+</body>
+<script>
+
+    /* 
+        几个注意点:
+            1. 关于组件名:
+                一个单词组成:
+                    第一种写法(首字母小写): girlfriend
+                    第二种写法(首字母大写): Girlfriend
+                多个单词组成:
+                    第一种写法(kebab-case): my-girlfriend
+                    第二种写法(CamelCase 命名): Mygirlfriend(需要 Vue 脚手架支持)
+
+                备注: 
+                    (1). 组件名尽可能回避 HTML 中已有的元素名称, 列如: h2, H2 都不行
+                    (2). 可以使用 name 配置项指定组件在开发中呈现的名字
+                
+            2. 关于组件标签:
+                    第一种写法: <girlfriend></girlfriend>
+                    第二种写法: <girlfriend/>
+                    备注: 不使用脚手架时, <girlfrirend/> 会导致后续组件不能渲染
+            
+            3. 一个简写方式:
+                const girlfriend =Vue.extend({}) 可简写为: const girlfriend = options
+
+    */
+
+    Vue.config.productionTip = false;
+
+    const girlfriend = Vue.extend({
+        // 可以使用 name 配置项指定组件在开发中呈现的名字
+        name: "Liuwenjing",
+        template: `
+            <div>
+                <h2>girlfriend: {{girlfriendName}}</h2>
+                <h2>所在城市: {{address}}</h2>
+            </div>
+        `,
+        data() {
+            return {
+                girlfriendName: "刘文静",
+                address: "青岛"
+            }
+        }
+    });
+    const spouse = {
+        template: `
+            <div>
+                <h3>{{msg}}</h3>    
+            </div>
+        `,
+        data() {
+            return {
+                msg: "你好呀文静！"
+            }
+        }
+    }
+
+    new Vue({
+        el: "#root",
+        components: {
+            Girlfriend: girlfriend,
+            "my-girlfriend": girlfriend,
+            spouse,
+
+        },
+        data: {
+            msg: "余生请多多指教！文静"
+        }
+    });
+</script>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.set 的使用</title>
+    <script src="../js/vue.js"></script>
+</head>
+<style>
+    * {
+        color: pink;
+    }
+</style>
+
+<body>
+    <!-- 准备好一个容器 -->
+    <div id="root">
+        <h1>girlfriend 信息</h1>
+        <h2>语句: {{hobby.statement}}</h2>
+        <h2>姓名: {{name}}</h2>
+        <h2>地址: {{address}}</h2>
+        <h3>可爱: {{loveliness}}</h3>
+        <h3 v-if="hobby.pim.sex">性别: {{hobby.pim.sex}}</h3>
+        <hr>
+        <button @click="addSex">添加一个性别属性, 默认值为女</button>
+        <h2>爱好: {{hobby.one}},{{hobby.two}},{{hobby.three}}</h2>
+        <hr>
+        <h2>个人信息: {{hobby.pim.age}},{{hobby.pim.birthday}},{{hobby.pim.appearance}}</h2>
+        <h2>
+            <ul>
+                <li v-for="(firend ,index) in hobby.pim.firends" :key="index">
+                    {{index+1}}--{{firend.name}}--{{firend.age}}
+                </li>
+            </ul>
+        </h2>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false; // 阻止 Vue 在启动时产生生产提示
+
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            name: "刘文静",
+            address: "青岛",
+            loveliness: "一个超级好看的小姐姐",
+            hobby: {
+                one: "吃",
+                two: "明信片",
+                three: "花",
+                pim: {
+                    // sex: "女",
+                    age: 21,
+                    birthday: 326,
+                    appearance: "一个超级好看的小姐姐",
+                    firends: [
+                        { name: "胡敏", age: 26 },
+                        { name: "文伟", age: 24 },
+                        { name: "褚帅", age: 26 },
+                    ]
+                }
+            }
+        },
+        methods: {
+            addSex() {
+                Vue.set(this.hobby.pim, "sex", "好看的小姐姐")
+                this.$set(this, "loveliness", "好看的小姐姐")
+            }
+        },
+    })
+</script>
+
+</html>

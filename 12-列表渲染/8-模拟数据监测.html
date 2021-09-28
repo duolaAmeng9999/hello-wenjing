@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模拟数据监测</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let data = {
+        name: "刘文静",
+        address: "青岛"
+    }
+    /* Object.defineProperty(data, "name", {
+        get() { // 当读取 data.name 属性时; 会再次调用 get, 再次读取; 死递归
+            return data.name;
+        },
+        set(value) { // 同理 get
+            data.name = value;
+        }
+    }) */
+    // 创建一个监视的实例对象, 用于监视 data 中的属性的变化
+    const obs = new Observer(data);
+    console.log(obs);
+
+    // 准备一个 vm 实例对象
+    let vm = {};
+    vm._data = data = obs;
+
+    function Observer(obj) {
+        // 汇总对象中的所有的属性形成一个数组
+        const keys = Object.keys(data); // 遍历对象中的属性名; 返回一个数组
+        // 遍历
+        keys.forEach((k) => {
+            Object.defineProperty(this, k, {
+                get() {
+                    return obj[k];
+                },
+                set(value) {
+                    console.log(`${k}的值被修改了, 我要去解析模板, 生成虚拟 DOM, 进行 Diff 比较....我要开始忙了`);
+                    obj[k] = value;
+                }
+            })
+        })
+    }
+</script>
+
+</html>

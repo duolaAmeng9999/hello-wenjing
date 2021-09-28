@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天气案例</title>
+    <!-- 引入 Vue 文件 -->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <!-- <h2>今天天气很{{info}}</h2> -->
+        <h2>今天天气很{{info}}</h2>
+        <button @click='change'>切换天气</button>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false;//设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    /* 
+        深度监视: 
+            (1).Vue 中的 watch 默认不能检测对象内部值的改变(一层)
+            (2).配置 deep:true 可以检测对象内部值的改变(多层)
+        备注:
+            (1).Vue 自身可以检测对象内部值的改变, 但 Vue 提供的 watch 默认不可以!
+            (2).使用 watch 是根据数据的具体结构, 决定是否采用深度检测
+    */
+
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            isHot: true,
+        },
+        computed: {
+            info() {
+                return this.isHot ? '炎热' : '凉爽'
+            }
+        },
+        methods: {
+            change() {
+                this.isHot = !this.isHot;
+            }
+        },
+        watch: {
+            // 正常写法
+            /*  isHot: {
+                 // immediate: true,// 初始化时让 immediate 调用一下
+                 // handler 什么时候被调用？当 isHot 发生改变时
+                 handler(newValue, oldValue) {
+                     console.log("新值" + newValue, "旧值" + oldValue)
+                 },
+             }, */
+            // 简写
+            /* isHot(newValue, oldValue) {
+                console.log("新值" + newValue, "旧值" + oldValue)
+            } */
+        }
+    })
+    // 正常写法或完整写法
+    /* vm.$watch('isHot', {
+        immediate: true,
+        handler(newValue, oldValue) {
+            console.log('新 = ' + newValue, '旧 = ' + oldValue)
+        }
+    }) */
+    // 简写
+    vm.$watch('isHot', function (newValue, oldValue) {// 不能写成箭头函数
+        console.log('新值:' + newValue, '旧值:' + oldValue)
+    })  
+</script>
+
+</html>

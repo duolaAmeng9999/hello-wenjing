@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../js/vue.js"></script>
+    <title>更新时的一个问题</title>
+</head>
+
+<body>
+    <div id="root">
+        <h2>列表的过滤</h2>
+        <button @click="wenjing">点击更新文静信息</button>
+        <ul>
+            <li v-for="(p, index) of perons" :key="p.id">
+                {{p.name}}--{{p.age}}--{{p.sex}}--{{p.id}}
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false;
+
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            perons: [
+                { id: "001", name: '马冬梅', age: 32, sex: "女" },
+                { id: "002", name: '周冬雨', age: 42, sex: "女" },
+                { id: "003", name: "周杰伦", age: 38, sex: "男" },
+                { id: "004", name: "温兆伦", age: 43, sex: "男" },
+                { id: "520326", name: "文静", age: 21, sex: "女" }
+            ],
+        },
+        methods: {
+            wenjing() {
+                /* this.perons[4].name = "刘文静" // 奏效; Vue 中是可以这样写的
+                this.perons[4].age = 22, // 奏效; Vue 中是可以这样写的
+                this.perons[4].aiHao = "吃" // 奏效; Vue 中是可以这样写的 */
+                // this.perons[4] = {id:"520326",name: "刘文静", age: 22, sex: "女"} // 不奏效
+                this.perons.splice(0, 1, {id:"326",name: "刘文静", age: 22, sex: "女"});
+
+            }
+        }
+    })
+</script>
+
+</html>

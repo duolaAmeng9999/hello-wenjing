@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>非单文件组件</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>{{msg}}</h1>
+        <hr>
+        <!-- 第三步: 编写组件标签 -->
+        <girlfriend></girlfriend>
+        <hr>
+        <!-- 第三步: 编写组讲标签 -->
+        <hello></hello>
+        <spouse></spouse>
+        <spouse></spouse>
+    </div>
+
+    <div id="root2">
+        <!-- 第三步: 编写组讲标签 -->
+        <hello></hello>
+    </div>
+</body>
+<script>
+
+    /* 
+        Vue 中使用组件的1三大步骤:
+            一、定义组件(创建组件)
+            二、注册组件
+            三、使用组件(写组件标签)
+
+        一、如何定义一个组件 ?
+                使用 Vue.extend(options) 创建, 其中 options 和 new Vue(options) 时传入的那个 options 几乎一样, 但也有区别:
+
+                    区别如下:
+                        1. el 不要写, 为什么 ? ———— 最终所有的组件都要经过 vm 的管理, 由 vm 决定服务那个容器
+                        2. data 必须写成函数式, 为什么 ? ———— 避免组件使用时, 数据存在引用关系
+
+                    备注: 使用 template 可以配置组件结构
+        
+        二、如何注册组件:
+            1. 局部注册: 靠 new Vue 时侯传入 components 选项
+            2. 全局注册: 靠 Vue.componet("组件名", 组件)
+        
+        三、编写组件标签
+            <girlfriend></girlfriend>
+    */
+
+    Vue.config.productionTip = false;
+
+    // 第一步: 创建 girlfriend 组件
+    const girlfriend = Vue.extend({
+        template: `
+            <div>
+                <h2>girlfriend: {{girlfriendName}}</h2>
+                <h2>所在城市: {{address}}</h2>
+                <button @click="showName">点我提示女朋友姓名</button>
+            </div>
+        `,
+        // el: "#root", // 组件定义时一定不要写 el 配置项, 因为最终所有的组件都要被一个 vm 管理, 由 vm 决定服务与哪个容器
+        data() {
+            return {
+                girlfriendName: "刘文静",
+                address: "青岛"
+            };
+        },
+        methods: {
+            showName() {
+                alert(this.girlfriendName)
+            }
+        },
+    });
+    // 第一部: 创建 spouse 组件
+    const spouse = Vue.extend({
+        template: `
+            <div>
+                <h2>对象: {{otherName}}</h2>
+                <h2>年龄 {{age}}</h2>
+                <hr>
+            </div>
+        `,
+        data() {
+            return {
+                otherName: "wenjing",
+                age: 22,
+            };
+        },
+    });
+    // 第一步创建 hello 组件
+    const hello = Vue.extend({
+        template: `
+            <div>
+                <h1>{{msg}}</h1>
+                <hr>
+            </div>
+        `,
+        data() {
+            return {
+                msg: "你好呀！文静，余生多多指教"
+            };
+        },
+    });
+
+
+    // 第二步: 全局注册
+    Vue.component("hello", hello);
+
+
+    // 创建 vm
+    new Vue({
+        el: "#root",
+        // 第二步: 局部注册组件
+        components: {
+            girlfriend,
+            spouse,
+        },
+        data: {
+            msg: "余生请多多指教！文静"
+        },
+    });
+
+    new Vue({
+        el: "#root2"
+    })
+
+</script>
+
+</html>

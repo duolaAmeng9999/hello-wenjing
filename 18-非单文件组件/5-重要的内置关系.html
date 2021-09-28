@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <girlfriend></girlfriend>
+    </div>
+</body>
+<script>
+
+    /* 
+        1. 一个重要的内置关系: VueComponent.prototype.__proto__ === Vue.prototype
+        2. 为什么要有这个关系: 让组件的实例对象(vc), 可以访问到 Vue 原型上的属性, 方法
+    */
+
+    Vue.config.productionTip = false;
+    Vue.prototype.birthday = 326;
+
+    // 定义 girlfriend 组件
+    const girlfriend = Vue.extend({
+        template: `
+            <div>
+                <h3>对象: {{name}}</h3>
+                <h3>年龄: {{age}}</h3>    
+                <button @click="showBirthday">点我获取生日</button>
+            </div>
+        `,
+        data() {
+            return {
+                name: "Wenjing·Liu",
+                age: 22
+            }
+        },
+        methods: {
+            showBirthday() {
+                console.log(this.birthday); //可以访问到 Vue.prototype 上的属性 birthday
+            }
+        },
+    })
+
+    // 创建 vm 
+    const vm = new Vue({
+        el: "#root",
+        components: {
+            girlfriend,
+        },
+        data: {
+            msg: "你好呀！文静"
+        }
+    });
+    console.log(girlfriend.prototype.__proto__ === Vue.prototype); // VUeComponent 的原型对象的原型指向 Vue.prototype
+    console.log(vm.birthday);
+    // 定义一个构造函数
+    /*  function Demo() {
+         this.name = "wenjing";
+         this.age = 22;
+     };
+
+     const result = new Demo();
+     console.log(Demo.prototype); // 显示原型属性
+     console.log(result.__proto__); // 隐式原型属性
+     console.log(Demo.prototype === result.__proto__); // true
+     // 通过显示原型属性操作原型对象, 追加一个 address 属性, 值为 青岛
+     Demo.prototype.address = "青岛";
+     console.log(result.address);
+     console.log(result); */
+</script>
+
+</html>

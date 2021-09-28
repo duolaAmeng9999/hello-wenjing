@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件的基本使用</title>
+    <!-- 引入 Vue 文件 -->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备好容器 -->
+    <div id="root">
+        <h2>欢迎来到{{address}};愿你在{{address}}度过一个愉快的时光！</h2>
+        <button @click = "showInfo1">点击提示信息(不传参)</button>
+        <button @click = "showInfo2(666, $event)">点击提示信息(传参)</button>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false;//设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    /* 
+        事件的几本使用:
+                1. 使用 v-on: xxx 或 @xxx 绑定事件, 其中 xxx 是事件名
+                2. 事件的回调需要配置在 methods 对象中, 最终会在 vm 上
+                3. methods 中配置的函数, 不要用箭头函数! 否则 this 就不是 vm 了
+                4. methods 中配置的函数, 都是被 Vue 所管理的函数, this 的指向的 vm 或 组件的实例对象
+                5. @click = "dome" 和 @click = "dome($event)" 效果一致, 但后者可以传参
+    */
+    // 创建 Vue 实例
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            address: "上海"
+        },
+        methods: {
+           showInfo1(event) {
+               console.log(this === vm);//  true; 此处的 this 指向 vm
+               alert("欢迎来到" + this.address)
+               
+           },
+           showInfo2(num, event) {
+               console.log(num);// 666, 所传的形参
+               console.log(event.target);//button 这个元素
+               console.log(this === vm);//  true; 此处的 this 指向 vm
+               alert("十里洋场烟花地,风云际会上海滩!")
+           }
+        }
+    })
+    
+</script>
+
+</html>

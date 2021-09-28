@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>理解MVVM</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备好一个容器 -->
+    <div id="root">
+        <!--View-->
+        <h1>friend: {{name}}</h1>
+        <h1>address: {{address}}</h1>
+        <!-- <h1>测试一下1: {{$emit}}</h1>
+        <h1>测试一下2: {{_c}}</h1> -->
+    </div>
+    <script>
+        Vue.config.productionTip = false;//设置为 false 以阻止 vue 在启动时生成生产提示。
+        /* 
+            MVVM模型
+                1、M: 模型(Model): data 中的数据
+                1、V: 试图(View): 模板代码
+                3、VM: 视图模型(ViewModel): Vue 实例
+            观察发现:
+                1、data 中所有的属性, 最会都出现在了 vm 身上
+                2、vm 身上的所有属性 及 Vue 原型上的所有属性, 在 Vue 模板中都可以直接使用
+        */
+        const vm = new Vue({// ViewModel
+            el: "#root",
+            data() {
+                return {// Model
+                    name: "Tom",
+                    address: "青岛",
+                    age: "21"
+                }
+            }
+        });
+        console.log(vm);
+    </script>
+</body>
+
+</html>

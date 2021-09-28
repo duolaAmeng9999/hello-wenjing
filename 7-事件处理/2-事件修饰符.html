@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件的修饰符</title>
+    <!-- 引入 Vue 文件 -->
+    <script src="../js/vue.js"></script>
+</head>
+<style>
+    .demo1 {
+        height: 200px;
+        background: pink;
+    }
+
+    .box1 {
+        width: 200px;
+        height: 200px;
+        background: cadetblue;
+    }
+
+    .box2 {
+        width: 100px;
+        height: 100px;
+        background: rgb(160, 151, 29);
+    }
+
+    .list {
+        width: 200px;
+        height: 200px;
+        background: cyan;
+        overflow: auto;
+    }
+
+    .list>li {
+        width: 200px;
+        height: 100px;
+        background: pink;
+    }
+</style>
+
+<body>
+    <!-- 准备好一个容器 -->
+    <div id="root">
+        <h2>欢迎来到{{address}};愿你在{{address}}度过一个愉快的时光！</h2>
+        <!-- 阻止默认事件(常用) -->
+        <a href="http://www.apple.cn " target="_blank" @click.prevent="showInfo">点击跳转</a>
+        <hr>
+        <!-- 阻止事件冒泡(常用) -->
+        <div class="demo1" @click="showInfo">
+            <button @click.stop="showInfo">点击提交</button>
+            <!-- 修饰符可以连续写 -->
+            <a href="http://www.apple.com" @click.stop.prevent="showInfo">点击跳转Apple</a>
+        </div>
+        <hr>
+        <!-- 事件只触发一次(常用) -->
+        <button @click.once="showInfo">点击提交</button>
+        <!-- 使用事件捕获模式 -->
+        <div class="box1" @click.capture='showMsg(1)'>
+            box1
+            <div class="box2" @click='showMsg(2)'>
+                box2
+            </div>
+        </div>
+        <hr>
+        <!-- self: 只有 event.target 是当前操作的元素时才能触发的 -->
+        <div class="demo1" @click.self="showInfo">
+            <button @click="showInfo">点击提交</button>
+        </div>
+        <hr>
+        <!-- passive: 事件的默认行为立即执行, 无需等待事件的回调执行完毕   -->
+        <ul class="list" @scroll="demo">
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>4</li>
+            <li>4</li>
+            <li>4</li>
+            <li>7</li>
+        </ul>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false;//设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    /* 
+        Vue 中事件修饰符:
+                1. prevent: 阻止默认事件(常用)
+                2. stop: 阻止事件冒泡(常用)
+                3. once: 事件只触发一次(常用)
+                4. captrue: 使用事件捕获模式
+                5. self: 只有 event.target 是当前操作的元素时才能触发的
+                6. passive: 事件的默认行为立即执行, 无需等待事件的回调执行完毕  
+    */
+    new Vue({
+        el: "#root",
+        data: {
+            address: "上海"
+        },
+        methods: {
+            showInfo(event) {
+                // event.preventDefault() 阻止默认行为
+                console.log(event.target)
+                alert("欢迎来到" + this.address);
+            },
+            showMsg(num) {
+                console.log(num);
+            },
+            demo() {
+                for (let i = 0; i < 100000; i++) {
+                    console.log('wenjing')
+                }
+            }
+        }
+    })
+
+</script>
+
+</html>

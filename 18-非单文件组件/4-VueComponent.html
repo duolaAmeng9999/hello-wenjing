@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueComponet</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <girlfriend></girlfriend>
+        <hello></hello>
+    </div>
+</body>
+<script>
+
+    /* 
+        关于 VueComponent:
+                1. girlfriend 组件本质是一个名为 VueComponent 的构造函数, 且不是程序员定义的, 是 Vue.extend 生成的
+
+                2. 我们只需要写 <girlfriend></girlfriend> 或 <girlfriend/>, Vue 解析时会帮我们创建 girlfriend 组件的实例对象
+                    即 Vue 帮我们执行的: new VueComponent(options)
+                
+                3. 特别注意: 每次调用 Vue.extend, 返回的都是一个全新的 VueComponent
+
+                4. 关于 this 的指向:
+                    (1). 组件配置中:
+                            data 函数, methods 中的函数, watch 中的函数, computed 中的函数, 它们的 this 均是 【VueComponent 实例对象】
+                    (2). new Vue(options) 配置中:
+                            data 函数, methods 函数, watch 中的函数, computed 中的函数, 它们的 this 均是 【Vue 实例对象】 
+                
+                5. VueComponent 的实例对象, 以后简称 vc (也可称为: 组件实例对象); Vue 的实例对象,以后简称为: vm
+    */
+
+    Vue.config.productionTip = false;
+    
+    // 定义 hobby 组件
+    const hobby = Vue.extend({
+        template: `
+            <span>逛街</span>
+        `,
+    })
+    // 定义 girlfriend 组件
+    const girlfriend = Vue.extend({
+        template: `
+            <div>
+                <h2>girlfriend: {{name}}</h2>
+                <h2>所在城市: {{address}}</h2>
+                <button @click="showName">点我提示对象名</button>
+            </div>
+        `,
+        data() {
+            return {
+                name: "wenjing",
+                address: "青岛"
+            }
+        },
+        methods: {
+            showName() {
+                alert(this.name);
+                console.log(this);
+            }
+        },
+    });
+    // 定义 hello 组件
+    const hello = Vue.extend({
+        template: `
+            <div>
+                <span>{{msg}}</span> 
+                <br>
+                <hobby></hobby>
+             </div>
+        `,
+        data() {
+            return {
+                msg: "hello！文静"
+            }
+        },
+        components: {
+            hobby,
+        }
+    });
+
+
+    console.log("@", hello);
+    console.log("#", girlfriend);
+    console.log(hello === girlfriend); // false
+
+
+
+    const vm = new Vue({
+        el: "#root",
+        // 注册组件
+        components: {
+            hello,
+            girlfriend
+        }
+    });
+    console.log(vm);
+</script>
+
+</html>

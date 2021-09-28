@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件嵌套</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- <app></app> -->
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false;
+
+    // 定义 hobby 组件
+    const hobby = {
+        template: `
+            <div>
+                <h2>爱好: {{hobby}}</h2>
+            </div>
+        `,
+        data() {
+            return {
+                hobby: "逛街吃"
+            };
+        },
+    };
+    // 定义 hello 组件
+    const hello = {
+        template: `
+            <h1 style="color: pink">{{msg}}</h1>
+        `,
+        data() {
+            return {
+                msg: "你好呀！文静"
+            };
+        },
+    };
+    // 定义 girlfriend 组件
+    const girlfriend = Vue.extend({
+        template: `
+            <div>
+                <h2>girlfriend: {{girlfriendName}}</h2>
+                <h2>所在城市: {{address}}</h2>
+                <hobby></hobby>
+                <hr>  
+            </div>
+        `,
+        data() {
+            return {
+                girlfriendName: "刘文静",
+                address: "青岛"
+            }
+        },
+        // 定义局部组件
+        components: {
+            hobby
+        }
+    });
+    // 定义 spouse 组件
+    const spouse = Vue.extend({
+        template: `
+            <div>
+                <h2>对象: {{otherName}}</h2>
+                <h2>年龄: {{age}}</h2>    
+            </div>
+        `,
+        data() {
+            return {        
+                otherName: "wenjing",
+                age: 22
+            }
+        }
+    });
+    // 定义 app 组件
+    const app = {
+        template: `
+            <div>
+                <hello></hello>
+                <girlfriend></girlfriend>
+                <spouse></spouse>
+            </div>
+        `,
+        components: {
+            girlfriend,
+            spouse,
+            hello,
+        }
+    }
+
+    new Vue({
+        el: "#root",
+        template: `
+            <app></app>
+        `,
+        // 注协组件
+        components: {
+            app
+        }
+    })
+</script>
+
+</html>
